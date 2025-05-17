@@ -1,0 +1,310 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+import 'package:nepal_bhasa/screens/consonant_screen.dart';
+import 'package:nepal_bhasa/screens/home.dart';
+import 'package:nepal_bhasa/screens/Other/nepalSambat.dart';
+import 'package:nepal_bhasa/screens/national_anthem.dart';
+import 'package:nepal_bhasa/screens/number_screen.dart';
+import 'package:nepal_bhasa/screens/typingScript.dart';
+import 'package:nepal_bhasa/screens/vowel_screen.dart';
+import 'package:nepali_utils/nepali_utils.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      title: "Nepal Bhasa",
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+    ),
+  );
+}
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String bottomTitle;
+  final bool showBackButton;
+
+  const CustomAppBar({
+    super.key,
+    required this.bottomTitle,
+    this.showBackButton = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final englishDate = DateFormat.yMMMMEEEEd().format(now);
+    final nepaliDate = now.toNepaliDateTime();
+    final nepaliDateStr = NepaliDateFormat.yMMMMEEEEd(
+      Language.nepali,
+    ).format(nepaliDate);
+
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading:
+          showBackButton
+              ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => Navigator.pop(context),
+              )
+              : Builder(
+                builder:
+                    (context) => IconButton(
+                      icon: const Icon(Icons.menu, color: Colors.black),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
+              ),
+      backgroundColor: const Color.fromARGB(255, 133, 174, 228),
+      centerTitle: true,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            nepaliDateStr,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(
+            englishDate,
+            style: const TextStyle(color: Colors.black87, fontSize: 12),
+          ),
+        ],
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(25),
+        child: Container(
+          color: const Color.fromARGB(255, 255, 234, 50),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Center(
+            child: Text(
+              bottomTitle,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(85);
+}
+
+class CustomDrawer extends StatelessWidget implements PreferredSizeWidget {
+  const CustomDrawer({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromWidth(20.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Colors.grey[300],
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.grey[300]),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Ranjana Lipi',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 228, 58, 58),
+                  ),
+                ),
+              ),
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: '',
+              icon: Icons.home,
+              title: 'Home',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => HomePage()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: 'assets/svgicons/newastate.svg',
+              title: 'National Anthem',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NationalAnthemPage()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: 'assets/svgicons/co.svg',
+              title: 'Consonant',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ConsonantSoundScreen()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: 'assets/svgicons/vo.svg',
+              title: 'Vowel',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => VowelSoundScreen()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: 'assets/svgicons/nm.svg',
+              title: 'Number',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NumberScreen()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              svgPath: '',
+              icon: Icons.keyboard_hide,
+              title: 'Typing Script',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => RanjanaScriptPage()),
+                );
+              },
+            ),
+            Divider(),
+            _buildDrawerItem(
+              context,
+              svgPath: '',
+              icon: Icons.info_outline,
+              title: 'About',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => HomePage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+    BuildContext context, {
+    IconData? icon,
+    String? svgPath,
+    String? title,
+    VoidCallback? onTap,
+    Color iconColor = Colors.black,
+  }) {
+    return ListTile(
+      leading:
+          icon != null
+              ? Icon(icon, color: iconColor)
+              : (svgPath != null && svgPath.isNotEmpty
+                  ? SvgPicture.asset(svgPath, height: 24, width: 24)
+                  : const SizedBox(width: 24)),
+      title: Text(
+        title ?? '',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+      onTap: onTap,
+    );
+  }
+}
+
+class IconTile extends StatelessWidget {
+  final String iconPath;
+  final String label;
+  final VoidCallback? onTap;
+
+  const IconTile({
+    super.key,
+    required this.iconPath,
+    required this.label,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              iconPath,
+              height: 40,
+              placeholderBuilder: (_) => const Icon(Icons.image),
+            ),
+            const SizedBox(height: 8),
+            Text(label, textAlign: TextAlign.center),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomBottomNavBar extends StatefulWidget {
+  @override
+  const CustomBottomNavBar({super.key});
+  @override
+  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
+}
+
+class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
+  int _currentIndex = 0;
+  Size get preferredSize => const Size.fromWidth(20.0);
+
+  @override
+  Widget build(BuildContext context) {
+    const Color.fromARGB(255, 206, 200, 200);
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.more_horiz_rounded),
+          label: "Other",
+        ),
+      ],
+    );
+  }
+}
