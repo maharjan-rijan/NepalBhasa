@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nepal_bhasa/screens/consonant_screen.dart';
 import 'package:nepal_bhasa/screens/home.dart';
-import 'package:nepal_bhasa/screens/Other/nepalSambat.dart';
+import 'package:nepal_bhasa/screens/login.dart';
 import 'package:nepal_bhasa/screens/national_anthem.dart';
 import 'package:nepal_bhasa/screens/number_screen.dart';
 import 'package:nepal_bhasa/screens/typingScript.dart';
@@ -14,7 +14,7 @@ void main() {
   runApp(
     MaterialApp(
       title: "Nepal Bhasa",
-      home: HomePage(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     ),
   );
