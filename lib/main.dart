@@ -6,6 +6,7 @@ import 'package:nepal_bhasa/screens/home.dart';
 import 'package:nepal_bhasa/screens/login.dart';
 import 'package:nepal_bhasa/screens/national_anthem.dart';
 import 'package:nepal_bhasa/screens/number_screen.dart';
+import 'package:nepal_bhasa/screens/otherScreen.dart';
 import 'package:nepal_bhasa/screens/typingScript.dart';
 import 'package:nepal_bhasa/screens/vowel_screen.dart';
 import 'package:nepali_utils/nepali_utils.dart';
@@ -14,7 +15,7 @@ void main() {
   runApp(
     MaterialApp(
       title: "Nepal Bhasa",
-      home: LoginScreen(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     ),
   );
@@ -278,33 +279,39 @@ class IconTile extends StatelessWidget {
 }
 
 class CustomBottomNavBar extends StatefulWidget {
-  @override
   const CustomBottomNavBar({super.key});
+
   @override
   State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
 }
 
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   int _currentIndex = 0;
-  Size get preferredSize => const Size.fromWidth(20.0);
+
+  final List<Widget> _pages = [
+    HomePage(),
+    Otherscreen(), // You can change this to any other page you consider "Other"
+  ];
 
   @override
   Widget build(BuildContext context) {
-    const Color.fromARGB(255, 206, 200, 200);
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      onTap: (index) {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.more_horiz_rounded),
-          label: "Other",
-        ),
-      ],
+    return Scaffold(
+      body: IndexedStack(index: _currentIndex, children: _pages),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz_rounded),
+            label: "Other",
+          ),
+        ],
+      ),
     );
   }
 }

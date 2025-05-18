@@ -53,6 +53,8 @@ class _DateConverterScreenState extends State<DateConverterScreen> {
                         onChanged: (value) {
                           setState(() {
                             selectedConversion = value!;
+
+                            
                           });
                         },
                       ),
