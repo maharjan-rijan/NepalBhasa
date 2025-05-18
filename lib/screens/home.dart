@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
     );
   }
 
@@ -188,7 +188,7 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
           children: [
             Container(
               width: double.infinity,
-              color: const Color.fromARGB(255, 156, 162, 170),
+              color: Color.fromARGB(255, 133, 174, 228),
               child: Column(
                 children: [
                   const SizedBox(height: 40),
@@ -277,7 +277,7 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black87,
+                  backgroundColor: Color.fromARGB(255, 133, 174, 228),
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 40),
                 ),

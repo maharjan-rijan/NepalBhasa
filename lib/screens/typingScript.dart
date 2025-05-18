@@ -45,9 +45,14 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.text_fields),
+                const Icon(
+                  Icons.text_fields,
+                  color: Color.fromARGB(255, 133, 174, 228),
+                ),
                 Expanded(
                   child: Slider(
+                    thumbColor: Color.fromARGB(255, 133, 174, 228),
+                    activeColor: Color.fromARGB(255, 133, 174, 228),
                     min: 16,
                     max: 72,
                     value: fontSize,
@@ -90,13 +95,25 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () => _pickColor(true),
-                  icon: const Icon(Icons.format_color_text),
-                  label: const Text("Text Color"),
+                  icon: const Icon(
+                    Icons.format_color_text,
+                    color: Color.fromARGB(255, 133, 174, 228),
+                  ),
+                  label: const Text(
+                    "Text Color",
+                    style: TextStyle(color: Color.fromARGB(255, 133, 174, 228)),
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () => _pickColor(false),
-                  icon: const Icon(Icons.format_color_fill),
-                  label: const Text("Background"),
+                  icon: const Icon(
+                    Icons.format_color_fill,
+                    color: Color.fromARGB(255, 133, 174, 228),
+                  ),
+                  label: const Text(
+                    "Background",
+                    style: TextStyle(color: Color.fromARGB(255, 133, 174, 228)),
+                  ),
                 ),
                 DropdownButtonHideUnderline(
                   child: ElevatedButton.icon(
@@ -123,8 +140,16 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
                         if (value != null) _saveImage(value);
                       });
                     },
-                    icon: const Icon(Icons.save),
-                    label: const Text("Save"),
+                    icon: const Icon(
+                      Icons.save,
+                      color: Color.fromARGB(255, 133, 174, 228),
+                    ),
+                    label: const Text(
+                      "Save",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 133, 174, 228),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -132,7 +157,7 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
     );
   }
 

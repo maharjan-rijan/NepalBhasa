@@ -45,7 +45,7 @@ class Otherscreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 1),
     );
   }
 

@@ -92,8 +92,7 @@ class VowelSoundScreen extends StatelessWidget {
           ),
         ],
       ),
-            bottomNavigationBar: CustomBottomNavBar(),
-
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
     );
   }
 }

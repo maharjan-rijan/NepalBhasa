@@ -79,7 +79,7 @@ class NationalAnthemPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0,),
     );
   }
 }

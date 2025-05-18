@@ -114,17 +114,23 @@ class CustomDrawer extends StatelessWidget implements PreferredSizeWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: Colors.grey[300]),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  'Ranjana Lipi',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 228, 58, 58),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 133, 174, 228),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SvgPicture.asset("assets/svgicons/logo.svg", height: 90),
+                  Text(
+                    'Ranjana Lipi',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 228, 58, 58),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
             _buildDrawerItem(
@@ -278,40 +284,48 @@ class IconTile extends StatelessWidget {
   }
 }
 
-class CustomBottomNavBar extends StatefulWidget {
-  const CustomBottomNavBar({super.key});
+class CustomBottomNavBar extends StatelessWidget {
+  final int currentIndex;
 
-  @override
-  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
-}
+  const CustomBottomNavBar({super.key, required this.currentIndex});
 
-class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  int _currentIndex = 0;
+  void _onItemTapped(BuildContext context, int index) {
+    if (index == currentIndex) return;
 
-  final List<Widget> _pages = [
-    HomePage(),
-    Otherscreen(), // You can change this to any other page you consider "Other"
-  ];
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => Otherscreen()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _pages),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz_rounded),
-            label: "Other",
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) => _onItemTapped(context, index),
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home, color: Color.fromARGB(255, 133, 174, 228)),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.more_horiz_rounded,
+            color: Color.fromARGB(255, 133, 174, 228),
           ),
-        ],
-      ),
+          label: "Other",
+        ),
+      ],
     );
   }
 }

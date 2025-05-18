@@ -16,7 +16,6 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
     'Year',
     for (int i = 1990; i <= DateTime.now().year; i++) i.toString(),
   ];
-
   final List<String> adMonths = [
     'Month',
     'January',
@@ -32,7 +31,6 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
     'November',
     'December',
   ];
-
   final List<String> adDays = [
     'Day',
     for (int i = 1; i <= 31; i++) i.toString(),
@@ -102,6 +100,17 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
     return map[monthName] ?? 1;
   }
 
+  void resetFields() {
+    setState(() {
+      selectedAdYear = 'Year';
+      selectedAdMonth = 'Month';
+      selectedAdDay = 'Day';
+      selectedBsYear = 'Year';
+      selectedBsMonth = 'Month';
+      selectedBsDay = 'Day';
+    });
+  }
+
   void calculateAge() {
     try {
       DateTime selectedDate;
@@ -113,28 +122,24 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
           showError('Please select a valid AD date');
           return;
         }
-
         selectedDate = DateTime(
           int.parse(selectedAdYear),
           monthNameToNumber(selectedAdMonth),
           int.parse(selectedAdDay),
         );
       } else {
-        // BS to AD conversion
         if (selectedBsYear == 'Year' ||
             selectedBsMonth == 'Month' ||
             selectedBsDay == 'Day') {
           showError('Please select a valid BS date');
           return;
         }
-
         final nepaliDate = NepaliDateTime(
           int.parse(selectedBsYear),
           monthNameToNumber(selectedBsMonth),
           int.parse(selectedBsDay),
         );
-
-        selectedDate = nepaliDate.toDateTime(); // Convert to AD
+        selectedDate = nepaliDate.toDateTime();
       }
 
       final now = DateTime.now();
@@ -143,12 +148,22 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
         return;
       }
 
-      final diff = now.difference(selectedDate);
-      final ageDate = DateTime(0).add(diff);
+      int years = now.year - selectedDate.year;
+      int months = now.month - selectedDate.month;
+      int days = now.day - selectedDate.day;
+
+      if (days < 0) {
+        months--;
+        days += DateTime(now.year, now.month, 0).day;
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
 
       setState(() {
-        ageResult =
-            '${ageDate.year - 0} Years ${ageDate.month - 1} Months ${ageDate.day - 1} Days';
+        ageResult = '$years Years $months Months $days Days';
       });
     } catch (e) {
       showError('Error calculating age: $e');
@@ -163,6 +178,7 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isAD = selectedConversion == 'AD';
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: const CustomAppBar(
@@ -184,7 +200,10 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                         value: 'AD',
                         groupValue: selectedConversion,
                         onChanged: (value) {
-                          setState(() => selectedConversion = value!);
+                          setState(() {
+                            selectedConversion = value!;
+                            resetFields();
+                          });
                         },
                       ),
                       const Text('AD'),
@@ -193,7 +212,10 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                         value: 'BS',
                         groupValue: selectedConversion,
                         onChanged: (value) {
-                          setState(() => selectedConversion = value!);
+                          setState(() {
+                            selectedConversion = value!;
+                            resetFields();
+                          });
                         },
                       ),
                       const Text('BS'),
@@ -204,22 +226,17 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DropdownButton<String>(
-                        value:
-                            selectedConversion == 'AD'
-                                ? selectedAdMonth
-                                : selectedBsMonth,
+                        value: isAD ? selectedAdMonth : selectedBsMonth,
                         items:
-                            (selectedConversion == 'AD' ? adMonths : bsMonths)
-                                .map((String month) {
-                                  return DropdownMenuItem<String>(
-                                    value: month,
-                                    child: Text(month),
-                                  );
-                                })
-                                .toList(),
+                            (isAD ? adMonths : bsMonths).map((month) {
+                              return DropdownMenuItem<String>(
+                                value: month,
+                                child: Text(month),
+                              );
+                            }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            if (selectedConversion == 'AD') {
+                            if (isAD) {
                               selectedAdMonth = value!;
                             } else {
                               selectedBsMonth = value!;
@@ -228,14 +245,9 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                         },
                       ),
                       DropdownButton<String>(
-                        value:
-                            selectedConversion == 'AD'
-                                ? selectedAdDay
-                                : selectedBsDay,
+                        value: isAD ? selectedAdDay : selectedBsDay,
                         items:
-                            (selectedConversion == 'AD' ? adDays : bsDays).map((
-                              String day,
-                            ) {
+                            (isAD ? adDays : bsDays).map((day) {
                               return DropdownMenuItem<String>(
                                 value: day,
                                 child: Text(day),
@@ -243,7 +255,7 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                             }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            if (selectedConversion == 'AD') {
+                            if (isAD) {
                               selectedAdDay = value!;
                             } else {
                               selectedBsDay = value!;
@@ -252,22 +264,17 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                         },
                       ),
                       DropdownButton<String>(
-                        value:
-                            selectedConversion == 'AD'
-                                ? selectedAdYear
-                                : selectedBsYear,
+                        value: isAD ? selectedAdYear : selectedBsYear,
                         items:
-                            (selectedConversion == 'AD' ? adYears : bsYears)
-                                .map((String year) {
-                                  return DropdownMenuItem<String>(
-                                    value: year,
-                                    child: Text(year),
-                                  );
-                                })
-                                .toList(),
+                            (isAD ? adYears : bsYears).map((year) {
+                              return DropdownMenuItem<String>(
+                                value: year,
+                                child: Text(year),
+                              );
+                            }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            if (selectedConversion == 'AD') {
+                            if (isAD) {
                               selectedAdYear = value!;
                             } else {
                               selectedBsYear = value!;
@@ -283,7 +290,10 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                     ),
-                    child: const Text('Calculate'),
+                    child: const Text(
+                      'Calculate',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                 ],
               ),
@@ -297,14 +307,14 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                 ageResult,
                 style: const TextStyle(
                   fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0,),
     );
   }
 }
