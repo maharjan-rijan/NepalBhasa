@@ -3,15 +3,9 @@ The Ranjana Script (Lantsa) is an abugida writing system which developed in the 
 
 It is used by many local governments such as those of Kathmandu Metropolitan City, Lalitpur Sub-Metropolitan City, Bhaktapur Municipality, Thimi Municipality, Kirtipur Municipality, Banepa Municipality, in signboards, letter pads, and such. 
 
-## Getting Started
+# Screen Sorts
+![HomePage](https://github.com/user-attachments/assets/b0926386-2dc2-4bac-aa7f-662e5435cd43)
 
-This project is a starting point for a Flutter application.
+## Reference :
+https://apkpure.com/ranjana-script/com.education.rbarnamala
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
