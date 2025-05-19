@@ -223,16 +223,3 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
   }
 }
 
-
-// DropdownButton<String>(
-//                     icon: const Icon(Icons.save),
-//                     hint: const Text("Save"),
-//                     items: const [
-//                       DropdownMenuItem(value: 'png', child: Text("PNG")),
-//                       DropdownMenuItem(value: 'jpg', child: Text("JPG")),
-        
-//                     ],
-//                     onChanged: (value) {
-//                       if (value != null) _saveImage(value);
-//                     },
-//                   ),4

@@ -4,6 +4,27 @@ The Ranjana Script (Lantsa) is an abugida writing system which developed in the 
 
 Ranjana is a Brahmic script which developed around 1100 CE. It was used in Nepal and is still used in Nepal by the Newar people to write the Newar language. The script is also used in most of the Mahayana and Vajrayana monasteries. 
 
+
+## Screen shorts
+<table>
+<row>
+<td><img src="./screensorts/HomePage.jpg"></td>
+<td><img src="./screensorts/ConsonantPage.jpg"></td>
+<td><img src="./screensorts/ConsonantWithVowelPage.jpg"></td>
+</row>
+<row>
+<td><img src="./screensorts/NumberPage.jpg"></td>
+<td><img src="./screensorts/VowelPage.jpg"></td>
+<td><img src="./screensorts/TypingScriptPage.jpg"></td>
+</row>
+
+<row>
+<td><img src="./screensorts/OtherPage.jpg"></td>
+<td><img src="./screensorts/DateConverterPage.jpg"></td>
+<td><img src="./screensorts/AgeCalculationPage.jpg"></td>
+</row>
+</table>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
