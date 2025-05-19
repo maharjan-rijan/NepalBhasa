@@ -28,17 +28,16 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               // SVG logo
               SvgPicture.asset('assets/svgicons/logo.svg', height: 500),
-              SizedBox(height: 15),
               Text(
                 'रञ्जना लिपि',
                 style: TextStyle(
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red[300],
+                  color: Colors.orangeAccent,
                   fontFamily: 'Peeti', // or any Nepali font if needed
                 ),
               ),

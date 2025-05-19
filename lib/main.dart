@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nepal_bhasa/screens/Other/ageCalculatorScreen.dart';
 import 'package:nepal_bhasa/screens/consonant_screen.dart';
 import 'package:nepal_bhasa/screens/home.dart';
 import 'package:nepal_bhasa/screens/login.dart';
@@ -127,7 +128,7 @@ class CustomDrawer extends StatelessWidget implements PreferredSizeWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 228, 58, 58),
+                      color: Colors.orangeAccent,
                     ),
                   ),
                 ],

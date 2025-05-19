@@ -11,6 +11,7 @@ class AgeCalculatePage extends StatefulWidget {
 
 class _AgeCalculatePageState extends State<AgeCalculatePage> {
   String selectedConversion = 'AD';
+  bool showResult = false;
 
   final List<String> adYears = [
     'Year',
@@ -108,6 +109,7 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
       selectedBsYear = 'Year';
       selectedBsMonth = 'Month';
       selectedBsDay = 'Day';
+      showResult = false;
     });
   }
 
@@ -164,9 +166,13 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
 
       setState(() {
         ageResult = '$years Years $months Months $days Days';
+        showResult = true;
       });
     } catch (e) {
       showError('Error calculating age: $e');
+      setState(() {
+        showResult = false;
+      });
     }
   }
 
@@ -182,7 +188,7 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: const CustomAppBar(
-        bottomTitle: 'Date Converter',
+        bottomTitle: 'Age Calculator',
         showBackButton: true,
       ),
       body: Column(
@@ -227,13 +233,12 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                     children: [
                       DropdownButton<String>(
                         value: isAD ? selectedAdMonth : selectedBsMonth,
-                        items:
-                            (isAD ? adMonths : bsMonths).map((month) {
-                              return DropdownMenuItem<String>(
-                                value: month,
-                                child: Text(month),
-                              );
-                            }).toList(),
+                        items: (isAD ? adMonths : bsMonths).map((month) {
+                          return DropdownMenuItem<String>(
+                            value: month,
+                            child: Text(month),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
                             if (isAD) {
@@ -241,18 +246,18 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                             } else {
                               selectedBsMonth = value!;
                             }
+                            showResult = false;
                           });
                         },
                       ),
                       DropdownButton<String>(
                         value: isAD ? selectedAdDay : selectedBsDay,
-                        items:
-                            (isAD ? adDays : bsDays).map((day) {
-                              return DropdownMenuItem<String>(
-                                value: day,
-                                child: Text(day),
-                              );
-                            }).toList(),
+                        items: (isAD ? adDays : bsDays).map((day) {
+                          return DropdownMenuItem<String>(
+                            value: day,
+                            child: Text(day),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
                             if (isAD) {
@@ -260,18 +265,18 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                             } else {
                               selectedBsDay = value!;
                             }
+                            showResult = false;
                           });
                         },
                       ),
                       DropdownButton<String>(
                         value: isAD ? selectedAdYear : selectedBsYear,
-                        items:
-                            (isAD ? adYears : bsYears).map((year) {
-                              return DropdownMenuItem<String>(
-                                value: year,
-                                child: Text(year),
-                              );
-                            }).toList(),
+                        items: (isAD ? adYears : bsYears).map((year) {
+                          return DropdownMenuItem<String>(
+                            value: year,
+                            child: Text(year),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
                             if (isAD) {
@@ -279,6 +284,7 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
                             } else {
                               selectedBsYear = value!;
                             }
+                            showResult = false;
                           });
                         },
                       ),
@@ -299,22 +305,23 @@ class _AgeCalculatePageState extends State<AgeCalculatePage> {
               ),
             ),
           ),
-          Card(
-            margin: const EdgeInsets.all(8),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                ageResult,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w400,
+          if (showResult)
+            Card(
+              margin: const EdgeInsets.all(8),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  ageResult,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0,),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
     );
   }
 }

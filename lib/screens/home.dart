@@ -192,7 +192,10 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  const CircleAvatar(radius: 50, backgroundColor: Colors.black),
+                  const CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage('assets/images/sankhadar.png'),
+                  ),
                   const SizedBox(height: 10),
                   const Text(
                     'Name',
@@ -250,7 +253,7 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
               children: [
                 buildMenuItem(
                   title: 'About Nepal Sambat',
-                  svgPath: 'assets/svgicons/nesa.svg',
+                  svgPath: 'assets/svgicons/nepa.svg',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -260,7 +263,7 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
                 ),
                 buildMenuItem(
                   title: 'About Sankhadhar Sakhwa',
-                  svgPath: 'assets/svgicons/nm.svg',
+                  svgPath: 'assets/svgicons/sankha.svg',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -339,8 +342,8 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
           (icon != null)
               ? Icon(icon, size: 20)
               : (svgPath != null && svgPath.isNotEmpty)
-              ? SvgPicture.asset(svgPath, width: 20, height: 20)
-              : const SizedBox(width: 20),
+              ? SvgPicture.asset(svgPath, width: 30, height: 30)
+              : const SizedBox(width: 10),
       title: Text(title),
       onTap: onTap,
     );
