@@ -7,22 +7,20 @@ Ranjana is a Brahmic script which developed around 1100 CE. It was used in Nepal
 
 ## Screen shorts
 <table>
-<row>
 <td><img src="./screensorts/HomePage.jpg"></td>
 <td><img src="./screensorts/ConsonantPage.jpg"></td>
 <td><img src="./screensorts/ConsonantWithVowelPage.jpg"></td>
-</row>
-<row>
+</table>
+<table>
 <td><img src="./screensorts/NumberPage.jpg"></td>
 <td><img src="./screensorts/VowelPage.jpg"></td>
 <td><img src="./screensorts/TypingScriptPage.jpg"></td>
-</row>
+</table>
 
-<row>
+<table>
 <td><img src="./screensorts/OtherPage.jpg"></td>
 <td><img src="./screensorts/DateConverterPage.jpg"></td>
 <td><img src="./screensorts/AgeCalculationPage.jpg"></td>
-</row>
 </table>
 
 ## Getting Started
