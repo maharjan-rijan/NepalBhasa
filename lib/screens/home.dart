@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nepal_bhasa/main.dart';
 import 'package:nepal_bhasa/screens/Other/nepalSambat.dart';
 import 'package:nepal_bhasa/screens/Other/sankhadharSakwa.dart';
+import 'package:nepal_bhasa/screens/login.dart';
 import 'package:nepal_bhasa/screens/otherScreen.dart';
 import 'package:nepal_bhasa/screens/typingScript.dart';
 
@@ -17,6 +20,15 @@ class HomePage extends StatelessWidget {
   final Color buttonBg = Colors.white;
 
   HomePage({super.key});
+
+  void _logout(BuildContext context) async {
+    await signOutUser();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,8 +191,40 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
   bool isOtherExpanded = true;
   bool isPagesExpanded = true;
 
+  Future<void> _logout(BuildContext context) async {
+  final shouldLogout = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Confirm Logout'),
+      content: const Text('Are you sure you want to log out?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text('Log Out'),
+        ),
+      ],
+    ),
+  );
+
+  if (shouldLogout == true) {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+      (route) => false,
+    );
+  }
+}
+
+
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       child: Container(
         color: const Color.fromARGB(255, 206, 200, 200),
@@ -188,22 +232,26 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
           children: [
             Container(
               width: double.infinity,
-              color: Color.fromARGB(255, 133, 174, 228),
+              color: const Color.fromARGB(255, 133, 174, 228),
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/images/sankhadar.png'),
+                    backgroundImage:
+                        user?.photoURL != null
+                            ? NetworkImage(user!.photoURL!)
+                            : const AssetImage('assets/images/sankhadar.png')
+                                as ImageProvider,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Name',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  Text(
+                    user?.displayName ?? 'No Name',
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  const Text(
-                    'example@gmail.com',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  Text(
+                    user?.email ?? 'No Email',
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -276,17 +324,16 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
 
             const Spacer(),
 
+            // Logout Button
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 133, 174, 228),
+                  backgroundColor: const Color.fromARGB(255, 133, 174, 228),
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 40),
                 ),
-                onPressed: () {
-                  // Add your logout logic here
-                },
+                onPressed: () => _logout(context),
                 child: const Text('Log out'),
               ),
             ),
@@ -339,9 +386,9 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
     return ListTile(
       dense: true,
       leading:
-          (icon != null)
+          icon != null
               ? Icon(icon, size: 20)
-              : (svgPath != null && svgPath.isNotEmpty)
+              : svgPath != null
               ? SvgPicture.asset(svgPath, width: 30, height: 30)
               : const SizedBox(width: 10),
       title: Text(title),
