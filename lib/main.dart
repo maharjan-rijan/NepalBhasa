@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
-import 'package:nepal_bhasa/screens/Other/ageCalculatorScreen.dart';
-import 'package:nepal_bhasa/screens/consonant_screen.dart';
-import 'package:nepal_bhasa/screens/home.dart';
-import 'package:nepal_bhasa/screens/login.dart';
-import 'package:nepal_bhasa/screens/national_anthem.dart';
-import 'package:nepal_bhasa/screens/number_screen.dart';
-import 'package:nepal_bhasa/screens/otherScreen.dart';
-import 'package:nepal_bhasa/screens/typingScript.dart';
-import 'package:nepal_bhasa/screens/vowel_screen.dart';
 import 'package:nepali_utils/nepali_utils.dart';
+
+import 'screens/consonant_screen.dart';
+import 'screens/home.dart';
+import 'screens/login.dart';
+import 'screens/national_anthem.dart';
+import 'screens/number_screen.dart';
+import 'screens/otherScreen.dart';
+import 'screens/typingScript.dart';
+import 'screens/vowel_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,16 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nepal_bhasa/main.dart';
-import 'package:nepal_bhasa/screens/Other/nepalSambat.dart';
-import 'package:nepal_bhasa/screens/Other/sankhadharSakwa.dart';
-import 'package:nepal_bhasa/screens/login.dart';
-import 'package:nepal_bhasa/screens/otherScreen.dart';
-import 'package:nepal_bhasa/screens/typingScript.dart';
 
 import 'national_anthem.dart';
 import 'consonant_screen.dart';
 import 'vowel_screen.dart';
 import 'number_screen.dart';
+import 'login.dart';
+import 'otherScreen.dart';
+import 'typingScript.dart';
+import 'Other/nepalSambat.dart';
+import 'Other/sankhadharSakwa.dart';
 
 class HomePage extends StatelessWidget {
   final Color backgroundColor = Color(0xFFC5C0C0);
@@ -192,34 +192,40 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
   bool isPagesExpanded = true;
 
   Future<void> _logout(BuildContext context) async {
-  final shouldLogout = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Confirm Logout'),
-      content: const Text('Are you sure you want to log out?'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Log Out'),
-        ),
-      ],
-    ),
-  );
-
-  if (shouldLogout == true) {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-      (route) => false,
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Confirm Logout'),
+            content: const Text('Are you sure you want to log out?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Color.fromARGB(255, 133, 174, 228)),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text(
+                  'Log Out',
+                  style: TextStyle(color: Color.fromARGB(255, 133, 174, 228)),
+                ),
+              ),
+            ],
+          ),
     );
-  }
-}
 
+    if (shouldLogout == true) {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => LoginScreen()),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

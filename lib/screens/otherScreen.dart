@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nepal_bhasa/main.dart';
-import 'package:nepal_bhasa/screens/Other/ageCalculatorScreen.dart';
-import 'package:nepal_bhasa/screens/Other/dateConverterScreen.dart';
+import 'Other/ageCalculatorScreen.dart';
+import 'Other/dateConverterScreen.dart';
 
 class Otherscreen extends StatelessWidget {
   final Color backgroundColor = Color(0xFFC5C0C0);

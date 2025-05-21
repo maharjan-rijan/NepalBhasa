@@ -23,7 +23,7 @@ class SankhadharInfoPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Image.asset(
-            'assets/images/sankhadar.png', // Add your image in assets and update pubspec.yaml
+            'assets/images/sankhadar.png', 
             height: 200,
             fit: BoxFit.contain,
           ),
