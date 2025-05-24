@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nepal_bhasa/main.dart';
+import 'package:nepal_bhasa/screens/Other/translatorScreen.dart';
 import 'Other/ageCalculatorScreen.dart';
 import 'Other/dateConverterScreen.dart';
 
@@ -38,6 +39,12 @@ class Otherscreen extends StatelessWidget {
                     Icons.calculate_rounded,
                     'Age Calculator',
                     AgeCalculatePage(),
+                  ),
+                  menuButtonIcon(
+                    context,
+                    Icons.translate,
+                    'Translator',
+                    TranslatorScreen(),
                   ),
                 ],
               ),

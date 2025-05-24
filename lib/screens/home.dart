@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nepal_bhasa/screens/Other/aboutPage.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:in_app_review/in_app_review.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nepal_bhasa/main.dart';
 
@@ -33,72 +38,74 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(bottomTitle: 'रञ्जना लिपि'),
+      appBar: CustomAppBar(bottomTitle: 'Ranjana Lipi'),
       drawer: CustomMainDrawer(),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: AspectRatio(
-                aspectRatio: 1.6,
-                child: SvgPicture.asset(
-                  'assets/svgicons/newaflag.svg',
-                  fit: BoxFit.cover,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: AspectRatio(
+                  aspectRatio: 1.6,
+                  child: SvgPicture.asset(
+                    'assets/svgicons/newaflag.svg',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 30),
-            Wrap(
-              spacing: 20,
-              runSpacing: 20,
-              alignment: WrapAlignment.center,
-              children: [
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/newastate.svg',
-                  'National\nAnthem',
-                  NationalAnthemPage(),
-                ),
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/vo.svg',
-                  'Vowel',
-                  VowelSoundScreen(),
-                ),
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/co.svg',
-                  'Consonant',
-                  ConsonantSoundScreen(),
-                ),
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/nm.svg',
-                  'Number',
-                  NumberScreen(),
-                ),
+              SizedBox(height: 30),
+              Wrap(
+                spacing: 20,
+                runSpacing: 20,
+                alignment: WrapAlignment.center,
+                children: [
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/newastate.svg',
+                    'National\nAnthem',
+                    NationalAnthemPage(),
+                  ),
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/vo.svg',
+                    'Vowel',
+                    VowelSoundScreen(),
+                  ),
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/co.svg',
+                    'Consonant',
+                    ConsonantSoundScreen(),
+                  ),
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/nm.svg',
+                    'Number',
+                    NumberScreen(),
+                  ),
 
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/keyboard.svg',
-                  'Typing Script',
-                  RanjanaScriptPage(),
-                ),
-                menuButtonSvg(
-                  context,
-                  'assets/svgicons/info.svg',
-                  'About',
-                  Otherscreen(),
-                ),
-              ],
-            ),
-          ],
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/keyboard.svg',
+                    'Typing Script',
+                    RanjanaScriptPage(),
+                  ),
+                  menuButtonSvg(
+                    context,
+                    'assets/svgicons/info.svg',
+                    'About',
+                    Aboutpage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
@@ -266,34 +273,54 @@ class _CustomMainDrawerState extends State<CustomMainDrawer> {
             const SizedBox(height: 20),
 
             // About Section
-            buildSection(
-              title: 'About',
-              isExpanded: isAboutExpanded,
-              onToggle: () {
-                setState(() {
-                  isAboutExpanded = !isAboutExpanded;
-                });
-              },
-              children: [
-                buildMenuItem(title: 'Privacy Policy', icon: Icons.privacy_tip),
-              ],
-            ),
+            // buildSection(
+            //   title: 'About',
+            //   isExpanded: isAboutExpanded,
+            //   onToggle: () {
+            //     setState(() {
+            //       isAboutExpanded = !isAboutExpanded;
+            //     });
+            //   },
+            //   children: [
+            //     buildMenuItem(title: 'Privacy Policy', icon: Icons.privacy_tip),
+            //   ],
+            // ),
 
             // Other Section
-            buildSection(
-              title: 'Other',
-              isExpanded: isOtherExpanded,
-              onToggle: () {
-                setState(() {
-                  isOtherExpanded = !isOtherExpanded;
-                });
-              },
-              children: [
-                buildMenuItem(title: 'Feedback', icon: Icons.feedback),
-                buildMenuItem(title: 'Rate App', icon: Icons.star_rate),
-                buildMenuItem(title: 'Share', icon: Icons.share),
-              ],
-            ),
+            // buildSection(
+            //   title: 'Other',
+            //   isExpanded: isOtherExpanded,
+            //   onToggle: () {
+            //     setState(() {
+            //       isOtherExpanded = !isOtherExpanded;
+            //     });
+            //   },
+            //   children: [
+            //     buildMenuItem(
+            //       title: 'Feedback',
+            //       icon: Icons.feedback,
+            //       onTap: () {
+            //         // final Uri emailLaunchUri = Uri(
+            //         //   scheme: 'mailto',
+            //         //   path: 'rijanq0@email.com',
+            //         //   queryParameters: {'subject': 'Feedback on the App'},
+            //         // );
+            //         // launchUrl(emailLaunchUri);
+            //       },
+            //     ),
+            //     buildMenuItem(title: 'Rate App', icon: Icons.star_rate),
+            //     buildMenuItem(
+            //       title: 'Share',
+            //       icon: Icons.share,
+            //       onTap: () {
+            //         // ignore: deprecated_member_use
+            //         Share.share(
+            //           'Check out this awesome app: https://play.google.com/store/apps/details?id=com.example.nepal_bhasa',
+            //         );
+            //       },
+            //     ),
+            //   ],
+            // ),
 
             // Other Pages Section
             buildSection(
