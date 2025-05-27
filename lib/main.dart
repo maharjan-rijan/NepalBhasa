@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:nepal_bhasa/screens/Other/aboutPage.dart';
-import 'package:nepal_bhasa/screens/Other/sankhadharSakwa.dart';
 import 'package:nepali_utils/nepali_utils.dart';
 
 import 'screens/consonant_screen.dart';
@@ -23,7 +22,7 @@ void main() async {
   runApp(
     MaterialApp(
       title: "Ranjana Lipi",
-      home: HomePage(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     ),
   );

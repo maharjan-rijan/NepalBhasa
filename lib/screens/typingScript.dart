@@ -1,11 +1,13 @@
+import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:nepal_bhasa/main.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
+import 'package:nepal_bhasa/main.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 class RanjanaScriptPage extends StatefulWidget {
   const RanjanaScriptPage({super.key});
@@ -23,200 +25,179 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
 
   @override
   Widget build(BuildContext context) {
-    double calculatedHeight = _calculateTextHeight(
-      devanagariInput,
-      fontSize,
-      MediaQuery.of(context).size.width - 24,
-    );
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final contentPadding = screenWidth * 0.03;
 
     return Scaffold(
-      appBar: const CustomAppBar(bottomTitle: "Ranjana Lipi"),
-      drawer: const CustomDrawer(),
+      appBar: CustomAppBar(bottomTitle: 'Ranjana Lipi', showBackButton: false),
+      drawer: CustomDrawer(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              TextField(
-                onChanged: (value) {
-                  setState(() => devanagariInput = value);
-                },
-                decoration: InputDecoration(
-                  labelText: 'Type in Devanagari',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+        padding: EdgeInsets.all(contentPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              onChanged: (value) => setState(() => devanagariInput = value),
+              decoration: InputDecoration(
+                labelText: 'Type in Devanagari',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+            ),
+            SizedBox(height: screenHeight * 0.015),
+            Row(
+              children: [
+                const Icon(Icons.text_fields, color: Colors.blue),
+                Expanded(
+                  child: Slider(
+                    min: screenWidth * 0.035,
+                    max: screenWidth * 0.15,
+                    activeColor: Colors.blue,
+                    value: fontSize,
+                    divisions: 50,
+                    onChanged: (value) => setState(() => fontSize = value),
                   ),
                 ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.text_fields,
-                    color: Color.fromARGB(255, 133, 174, 228),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      thumbColor: const Color.fromARGB(255, 133, 174, 228),
-                      activeColor: const Color.fromARGB(255, 133, 174, 228),
-                      min: 16,
-                      max: 72,
-                      value: fontSize,
-                      onChanged: (value) {
-                        setState(() => fontSize = value);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-
-              // Screenshot target
-              Screenshot(
-                controller: screenshotController,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Text(
-                    devanagariInput,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      fontFamily: 'Ranjana',
-                      color: foregroundColor,
-                    ),
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.015),
+            Screenshot(
+              controller: screenshotController,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade400),
+                ),
+                child: Text(
+                  devanagariInput,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontFamily: 'Ranjana',
+                    color: foregroundColor,
                   ),
                 ),
               ),
-
-              const SizedBox(height: 12),
-
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => _pickColor(true),
-                    icon: const Icon(
-                      Icons.format_color_text,
-                      color: Color.fromARGB(255, 133, 174, 228),
-                    ),
-                    label: const Text(
-                      "Text Color",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 133, 174, 228),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () => _pickColor(false),
-                    icon: const Icon(
-                      Icons.format_color_fill,
-                      color: Color.fromARGB(255, 133, 174, 228),
-                    ),
-                    label: const Text(
-                      "Background",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 133, 174, 228),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                    
-                    },
-                    icon: const Icon(
-                      Icons.save,
-                      color: Color.fromARGB(255, 133, 174, 228),
-                    ),
-                    label: const Text(
-                      "Save",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 133, 174, 228),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                _buildActionButton(
+                  icon: Icons.format_color_text,
+                  label: "Text Color",
+                  onPressed: () => _pickColor(true),
+                ),
+                _buildActionButton(
+                  icon: Icons.format_color_fill,
+                  label: "Background",
+                  onPressed: () => _pickColor(false),
+                ),
+                _buildActionButton(
+                  icon: Icons.save,
+                  label: "Save",
+                  onPressed: _saveImage,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(currentIndex: 0),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, color: Colors.blue),
+      label: Text(label, style: const TextStyle(color: Colors.blue)),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        side: const BorderSide(color: Colors.blue),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      ),
     );
   }
 
   void _pickColor(bool isForeground) {
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            isForeground
-                ? "Select Foreground Color"
-                : "Select Background Color",
-          ),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: isForeground ? foregroundColor : backgroundColor,
-              onColorChanged: (color) {
-                setState(() {
-                  if (isForeground) {
-                    foregroundColor = color;
-                  } else {
-                    backgroundColor = color;
-                  }
-                });
-              },
-              pickerAreaHeightPercent: 0.5,
+      builder:
+          (context) => AlertDialog(
+            title: Text(
+              isForeground ? "Select Text Color" : "Select Background Color",
             ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Close"),
-              onPressed: () => Navigator.pop(context),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: isForeground ? foregroundColor : backgroundColor,
+                onColorChanged: (color) {
+                  setState(() {
+                    if (isForeground) {
+                      foregroundColor = color;
+                    } else {
+                      backgroundColor = color;
+                    }
+                  });
+                },
+              ),
             ),
-          ],
-        );
-      },
+            actions: [
+              TextButton(
+                child: const Text("Close"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
     );
   }
 
-  Future<void> _saveImage(String format) async {
-    if (!(await Permission.storage.request().isGranted)) return;
+  Future<void> _saveImage() async {
+    if (!await _requestStoragePermission()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Storage permission denied")),
+      );
+      return;
+    }
 
-    final Uint8List? imageBytes = await screenshotController.capture(
-      pixelRatio: 2.0,
-    );
+    Uint8List? imageBytes = await screenshotController.capture(pixelRatio: 2.0);
     if (imageBytes == null) return;
 
-    await ImageGallerySaverPlus.saveImage(
+    final result = await ImageGallerySaverPlus.saveImage(
       imageBytes,
+      name: 'ranjana_${DateTime.now().millisecondsSinceEpoch}',
       quality: 100,
-      name: "ranjana_lipi_${DateTime.now().millisecondsSinceEpoch}",
     );
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Saved to gallery as $format")));
+    if ((result['isSuccess'] ?? false) || result['filePath'] != null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Image saved to gallery")));
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to save image")));
+    }
   }
 
-  double _calculateTextHeight(String text, double fontSize, double maxWidth) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: TextStyle(fontSize: fontSize, fontFamily: 'Ranjana'),
-      ),
-      textDirection: TextDirection.ltr,
-      maxLines: null,
-    )..layout(maxWidth: maxWidth);
-
-    return textPainter.size.height + 24; // extra padding
+  Future<bool> _requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      final status = await Permission.photos.request();
+      return status.isGranted;
+    } else if (Platform.isIOS) {
+      final status = await Permission.photos.request();
+      return status.isGranted;
+    }
+    return false;
   }
 }

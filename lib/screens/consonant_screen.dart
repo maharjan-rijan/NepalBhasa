@@ -38,12 +38,9 @@ final List<Letter> consonents = [
   Letter(char: "ह", dev: "ह", translit: "ha"),
   Letter(char: "क्ष", dev: "क्ष", translit: "kṣa"),
   Letter(char: "त्र", dev: "त्र", translit: "tra"),
-  Letter(char: "ज्ञ", dev: "ज्ञ", translit: "gya"),
-];
+  Letter(char: "ज्ञ", dev: "ज्ञ", translit: "gya"),];
 
-// Define vowel variations
-final List<Map<String, String>> vowelMappings = [
-  {'symbol': '', 'dev': '', 'translit': 'a'},
+final List<Map<String, String>> vowelMappings = [{'symbol': '', 'dev': '', 'translit': 'a'},
   {'symbol': 'ा', 'dev': 'ा', 'translit': 'ā'},
   {'symbol': 'ि', 'dev': 'ि', 'translit': 'i'},
   {'symbol': 'ी', 'dev': 'ी', 'translit': 'ī'},
@@ -56,13 +53,15 @@ final List<Map<String, String>> vowelMappings = [
   {'symbol': 'ो', 'dev': 'ो', 'translit': 'o'},
   {'symbol': 'ौ', 'dev': 'ौ', 'translit': 'au'},
   {'symbol': 'ं', 'dev': 'ं', 'translit': 'aṁ'}, // anusvara
-  {'symbol': 'ः', 'dev': 'ः', 'translit': 'aḥ'},
-];
+  {'symbol': 'ः', 'dev': 'ः', 'translit': 'aḥ'},];
 
 class ConsonantSoundScreen extends StatelessWidget {
   const ConsonantSoundScreen({super.key});
 
   void _showVowelPopup(BuildContext context, Letter letter) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final itemSize = screenWidth * 0.2;
+
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -83,9 +82,8 @@ class ConsonantSoundScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    'Consonant with vowel',
+                    'Consonant with Vowel',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -94,51 +92,45 @@ class ConsonantSoundScreen extends StatelessWidget {
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,
-                    children:
-                        vowelMappings.map((vowel) {
-                          String combined = letter.char + vowel['symbol']!;
-                          return Container(
-                            width: 65,
-                            height: 65,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(color: Colors.black26, blurRadius: 2),
-                              ],
+                    children: vowelMappings.map((vowel) {
+                      String combined = letter.char + vowel['symbol']!;
+                      return Container(
+                        width: itemSize,
+                        height: itemSize,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(color: Colors.black26, blurRadius: 2),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              combined,
+                              style: TextStyle(
+                                fontSize: itemSize * 0.45,
+                                fontFamily: 'Ranjana',
+                              ),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+                                Text(combined, style: const TextStyle(fontSize: 14)),
                                 Text(
-                                  combined,
+                                  vowel['translit']!,
                                   style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Ranjana',
+                                    fontSize: 14,
+                                    color: Colors.blue,
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      combined,
-                                      style: const TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      vowel['translit']!,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
-                          );
-                        }).toList(),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -151,6 +143,19 @@ class ConsonantSoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount;
+
+    if (screenWidth < 400) {
+      crossAxisCount = 4;
+    } else if (screenWidth < 600) {
+      crossAxisCount = 5;
+    } else if (screenWidth < 800) {
+      crossAxisCount = 6;
+    } else {
+      crossAxisCount = 7;
+    }
+
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: CustomAppBar(bottomTitle: 'व्यञ्जन वर्ण / Consonant / बा-आख:'),
@@ -161,19 +166,19 @@ class ConsonantSoundScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 itemCount: consonents.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                  crossAxisSpacing: 3,
-                  mainAxisSpacing: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 6,
+                  mainAxisSpacing: 6,
                 ),
                 itemBuilder: (context, index) {
                   final letter = consonents[index];
                   return GestureDetector(
                     onTap: () => _showVowelPopup(context, letter),
                     child: Card(
-                      elevation: 4,
+                      elevation: 3,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
                         child: Column(
@@ -181,24 +186,19 @@ class ConsonantSoundScreen extends StatelessWidget {
                           children: [
                             Text(
                               letter.char,
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w500,
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.07,
                                 fontFamily: "Ranjana",
-                                color: Colors.black,
                               ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(
-                                  letter.dev,
-                                  style: const TextStyle(fontSize: 15),
-                                ),
+                                Text(letter.dev, style: const TextStyle(fontSize: 14)),
                                 Text(
                                   letter.translit,
                                   style: const TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     color: Colors.blue,
                                   ),
                                 ),
@@ -215,7 +215,7 @@ class ConsonantSoundScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(currentIndex: 1,),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 1),
     );
   }
 }
