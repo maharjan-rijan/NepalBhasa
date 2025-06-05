@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
@@ -19,13 +22,77 @@ import 'screens/vowel_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-    MaterialApp(
+  runApp(const RanjanaApp());
+}
+
+class RanjanaApp extends StatelessWidget {
+  const RanjanaApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       title: "Ranjana Lipi",
-      home: LoginScreen(),
+      home: UserActivityWrapper(child: LoginScreen()),
       debugShowCheckedModeBanner: false,
-    ),
-  );
+    );
+  }
+}
+
+class UserActivityWrapper extends StatefulWidget {
+  final Widget child;
+  const UserActivityWrapper({super.key, required this.child});
+
+  @override
+  State<UserActivityWrapper> createState() => _UserActivityWrapperState();
+}
+
+class _UserActivityWrapperState extends State<UserActivityWrapper>
+    with WidgetsBindingObserver {
+  Timer? _inactivityTimer;
+  static const Duration _timeout = Duration(days: 30);
+
+  void _resetTimer() {
+    _inactivityTimer?.cancel();
+    _inactivityTimer = Timer(_timeout, _handleInactivity);
+  }
+
+  void _handleInactivity() async {
+    await signOutUser();
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => LoginScreen()),
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _resetTimer();
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _resetTimer();
+    } else if (state == AppLifecycleState.paused) {
+      _inactivityTimer?.cancel();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(onPointerDown: (_) => _resetTimer(), child: widget.child);
+  }
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

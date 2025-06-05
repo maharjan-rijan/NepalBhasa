@@ -75,12 +75,14 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade400),
                 ),
-                child: Text(
-                  devanagariInput,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontFamily: 'Ranjana',
-                    color: foregroundColor,
+                child: Center(
+                  child: Text(
+                    devanagariInput,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontFamily: 'Ranjana',
+                      color: foregroundColor,
+                    ),
                   ),
                 ),
               ),
@@ -110,6 +112,7 @@ class _RanjanaScriptPageState extends State<RanjanaScriptPage> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 1),
     );
   }
 

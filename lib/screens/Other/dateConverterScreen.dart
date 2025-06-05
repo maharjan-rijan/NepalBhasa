@@ -304,6 +304,7 @@ class _DateConverterScreenState extends State<DateConverterScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 1),
     );
   }
 }
